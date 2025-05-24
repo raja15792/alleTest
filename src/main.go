@@ -33,12 +33,15 @@ func main() {
 
 	log.Println("loading db")
 	log.Println(conf.DbURI)
+
+	// Initializing postgres pool connection
 	psql, err := db.NewPgPool(conf.DbURI)
 	if err != nil {
 		log.Println(err.Error())
 		panic(err)
 	}
 
+	// checking postgres connection
 	if err = psql.Ping(context.Background()); err != nil {
 		log.Println(err.Error())
 		panic(err)
@@ -50,7 +53,9 @@ func main() {
 	// or in a different external package and import that package here. After we initilize the kafka 
 	// client here, we can directly pass the client in differnt service from here.
 
+	// Initializing task service
 	taskService := service.NewTaskManager(psql)
+	// Initializing task controller
 	taskController := controller.NewTaskController(taskService)
 
 	// Middleware

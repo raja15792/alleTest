@@ -34,6 +34,7 @@ func NewTaskManager(db *pgxpool.Pool) *TaskManager {
 	}
 }
 
+// CreateTask creates a task and push it in db
 func (t *TaskManager) CreateTask(createReq model.Task) (*model.TaskId, int) {
 
 	trans, err := t.db.BeginTx(t.ctx, pgx.TxOptions{})

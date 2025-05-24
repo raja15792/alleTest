@@ -19,6 +19,7 @@ type TaskId struct {
 	Id uuid.UUID
 }
 
+// ToUpdateSQL generates set query to update a task
 func (t *Task) ToUpdateSQL() (string, []interface{}) {
 	var (
 		rulesSetCondition []string
@@ -46,5 +47,6 @@ func (t *Task) ToUpdateSQL() (string, []interface{}) {
 
 	params = append(params, t.Id)
 
+	// return update task query here
 	return fmt.Sprintf("UPDATE task SET %s WHERE id = $%d", strings.Join(rulesSetCondition, ", "), count), params
 }
