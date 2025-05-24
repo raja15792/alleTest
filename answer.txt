@@ -1,0 +1,27 @@
+To scale it horizontally:
+1. Run more instances of your service (ie. in Docker, Kubernetes, or behind a load balancer).
+2. Each instance connects to the same PostgreSQL database.
+3. A load balancer sends incoming requests to any available instance.
+
+Benefits:
+1. You can handle more traffic (because more services are ready to serve requests).
+2. Easy to set up initially — just duplicate the service and point to the same DB.
+
+
+Data Consistency & Concurrency
+If multiple service instances try to process or modify the same data at the same time, it can cause conflicts or race conditions.
+Solution: Use transactions, locks, or queues to coordinate work.
+
+
+Database Replication:
+To reduce read pressure on the primary database, you can enable replication.
+
+How Replication Helps:
+1. Write traffic goes to the primary
+2. Read queries can be spread across replicas
+3. Reduces load on the main DB
+
+
+Partitioning the Database (Sharding):
+Usefull when the dataset is too large for one DB server to handle efficiently.
+Table Partitioning:

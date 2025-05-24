@@ -15,6 +15,11 @@ import (
 	"github.com/alle/tasks/db"
 )
 
+//For inter sevice communication, I am opting kafka messaging. Task manager will publish events to 
+// kafka topics. Event publish work will be done in a separate non blocking thread. To avoid scenarios 
+// like application memory exhaustion, we wcan implement worker consumers with a fixed length of worker
+// queue to limit the max parallel thread at any given time.
+
 func main() {
 	conf := &common.Config{}
 	err := env.Parse(conf)
@@ -39,6 +44,11 @@ func main() {
 		panic(err)
 	}
 	log.Println("db initialized")
+
+	// TODO: actual kafka implementation is not done.
+	// We can initialize the a kafka client here. Kafka service will be written in same root directory
+	// or in a different external package and import that package here. After we initilize the kafka 
+	// client here, we can directly pass the client in differnt service from here.
 
 	taskService := service.NewTaskManager(psql)
 	taskController := controller.NewTaskController(taskService)
